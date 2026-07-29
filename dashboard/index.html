@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReplyFox // Operations</title>
+  <meta name="description" content="ReplyFox operations command center — MRR, signups, system health, and product insights." />
+  <meta name="theme-color" content="#05080f" />
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===================== HEADER ===================== -->
+  <header class="hud-header">
+    <div class="hud-brand">
+      <span class="hud-logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9l-4 4v-4H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" fill="#fff"/><circle cx="9" cy="11" r="1.2" fill="#06b6d4"/><circle cx="12.5" cy="11" r="1.2" fill="#06b6d4"/><circle cx="16" cy="11" r="1.2" fill="#06b6d4"/></svg>
+      </span>
+      <div class="hud-title">
+        <span class="t1">Reply<b>Fox</b> // Ops</span>
+        <span class="t2">Business Command Center</span>
+      </div>
+    </div>
+
+    <div class="hud-status">
+      <span class="status-pill"><span class="dot"></span>All Systems Operational</span>
+    </div>
+
+    <div class="hud-clock">
+      <div class="time mono" id="clock">00:00:00</div>
+      <div class="date mono" id="date">—</div>
+    </div>
+  </header>
+
+  <main class="hud-main">
+
+    <!-- ===================== ROW 1: HERO MRR + GROWTH CHART ===================== -->
+    <div class="row row-12">
+      <!-- Hero MRR -->
+      <section class="panel col-4 hero-mrr" aria-label="Monthly recurring revenue">
+        <div class="panel-body" style="padding:22px;">
+          <div class="label">Monthly Recurring Revenue</div>
+          <div class="value"><span class="cur">$</span><span id="mrrVal">4,855</span></div>
+          <div class="delta">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 15l5-5 4 4 6-7" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 7v5h-5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.6"/></svg>
+            <span>+18.2% MoM &middot; +$748</span>
+            <svg class="sparkline" id="sparkline" width="90" height="26" viewBox="0 0 90 26"></svg>
+          </div>
+          <div class="target">Target: $14,500 (Month 18) &middot; <span id="targetPct">33%</span></div>
+          <div class="progress"><div class="bar" id="targetBar"></div></div>
+        </div>
+      </section>
+
+      <!-- MRR Growth chart -->
+      <section class="panel col-8" aria-label="Revenue growth over time">
+        <div class="panel-head">
+          <span class="panel-title"><span class="marker"></span>Revenue Growth &middot; 12 Months</span>
+          <span class="panel-meta">MRR · trailing 12m</span>
+        </div>
+        <div class="panel-body">
+          <div class="legend" style="margin-bottom:10px;">
+            <span class="lg"><span class="sw" style="background:#22d3ee;box-shadow:0 0 8px #22d3ee"></span>MRR</span>
+          </div>
+          <svg class="hud-chart" id="mrrChart" role="img" aria-label="Line chart of monthly recurring revenue over 12 months"></svg>
+        </div>
+      </section>
+    </div>
+
+    <!-- ===================== ROW 2: KPI TILES ===================== -->
+    <div class="row row-4">
+      <section class="panel kpi" aria-label="Total businesses">
+        <div class="kpi-top">
+          <span class="kpi-label">Total Businesses</span>
+          <span class="kpi-icon ic-cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-5h6v5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+        <div class="kpi-val" id="kpiBiz">247</div>
+        <div class="kpi-sub"><span class="chg up">▲ +34</span><span>this month</span></div>
+      </section>
+
+      <section class="panel kpi" aria-label="Paying customers">
+        <div class="kpi-top">
+          <span class="kpi-label">Paying Customers</span>
+          <span class="kpi-icon ic-teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 15 9l7 .8-5 5 1.5 7L12 18l-6.5 3.8L7 14.8l-5-5L9 9l3-7Z" stroke-linejoin="round"/></svg></span>
+        </div>
+        <div class="kpi-val" id="kpiPaid">167</div>
+        <div class="kpi-sub"><span class="chg up">▲ +12</span><span>67.6% paid rate</span></div>
+      </section>
+
+      <section class="panel kpi" aria-label="Messages handled total">
+        <div class="kpi-top">
+          <span class="kpi-label">Messages Handled</span>
+          <span class="kpi-icon ic-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9l-4 4v-4H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" stroke-linejoin="round"/></svg></span>
+        </div>
+        <div class="kpi-val" id="kpiMsgTotal">82,431</div>
+        <div class="kpi-sub"><span class="chg up">▲ +6,204</span><span>this week</span></div>
+      </section>
+
+      <section class="panel kpi" aria-label="Messages today">
+        <div class="kpi-top">
+          <span class="kpi-label">Messages Today</span>
+          <span class="kpi-icon ic-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 8v4l3 2M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+        <div class="kpi-val" id="kpiMsgToday">1,284</div>
+        <div class="kpi-sub"><span class="chg up" id="msgRate">▲ 53/min</span><span>live throughput</span></div>
+      </section>
+    </div>
+
+    <!-- ===================== ROW 3: FUNNEL + HEALTH + CHURN ===================== -->
+    <div class="row row-12">
+      <!-- Conversion funnel -->
+      <section class="panel col-5" aria-label="Conversion funnel">
+        <div class="panel-head">
+          <span class="panel-title"><span class="marker"></span>Conversion Funnel</span>
+          <span class="panel-meta">30 days</span>
+        </div>
+        <div class="panel-body">
+          <div class="funnel">
+            <div class="funnel-stage s1">
+              <div class="fl-row"><span class="fl-name">Landing Visitors</span><span class="fl-num mono">14,820</span></div>
+              <div class="fl-track"><div class="fl-fill" style="width:100%"></div></div>
+            </div>
+            <div class="funnel-stage s2">
+              <div class="fl-row"><span class="fl-name">Signups</span><span class="fl-num mono">1,184 <span class="pct">(8.0%)</span></span></div>
+              <div class="fl-track"><div class="fl-fill" style="width:42%"></div></div>
+            </div>
+            <div class="funnel-stage s3">
+              <div class="fl-row"><span class="fl-name">Free (active)</span><span class="fl-num mono">247 <span class="pct">(20.9%)</span></span></div>
+              <div class="fl-track"><div class="fl-fill" style="width:24%"></div></div>
+            </div>
+            <div class="funnel-stage s4">
+              <div class="fl-row"><span class="fl-name">Paying Customers</span><span class="fl-num mono">167 <span class="pct">(67.6% of active)</span></span></div>
+              <div class="fl-track"><div class="fl-fill" style="width:18%"></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- System health -->
+      <section class="panel col-4" aria-label="System health">
+        <div class="panel-head">
+          <span class="panel-title"><span class="marker"></span>System Health</span>
+          <span class="panel-meta">last 5 min</span>
+        </div>
+        <div class="panel-body">
+          <div class="health-grid">
+            <div class="meter">
+              <div class="ring">
+                <svg width="110" height="110" viewBox="0 0 110 110">
+                  <circle class="track" cx="55" cy="55" r="46"></circle>
+                  <circle class="prog" data-pct="92" cx="55" cy="55" r="46" style="stroke:#34d399"></circle>
+                </svg>
+                <div class="center"><div><div class="mv">1.2s</div><div class="mu">avg</div></div></div>
+              </div>
+              <div class="mlabel">API Response</div>
+              <div class="msub">P95 2.1s</div>
+            </div>
+            <div class="meter">
+              <div class="ring">
+                <svg width="110" height="110" viewBox="0 0 110 110">
+                  <circle class="track" cx="55" cy="55" r="46"></circle>
+                  <circle class="prog" data-pct="98" cx="55" cy="55" r="46" style="stroke:#22d3ee"></circle>
+                </svg>
+                <div class="center"><div><div class="mv">0.4%</div><div class="mu">errors</div></div></div>
+              </div>
+              <div class="mlabel">Error Rate</div>
+              <div class="msub">99.6% success</div>
+            </div>
+            <div class="meter">
+              <div class="ring">
+                <svg width="110" height="110" viewBox="0 0 110 110">
+                  <circle class="track" cx="55" cy="55" r="46"></circle>
+                  <circle class="prog" data-pct="84" cx="55" cy="55" r="46" style="stroke:#fbbf24"></circle>
+                </svg>
+                <div class="center"><div><div class="mv">780ms</div><div class="mu">LLM</div></div></div>
+              </div>
+              <div class="mlabel">LLM Latency</div>
+              <div class="msub">Groq · target &lt;3s</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Churn -->
+      <section class="panel col-3" aria-label="Churn tracker">
+        <div class="panel-head">
+          <span class="panel-title"><span class="marker"></span>Churn</span>
+          <span class="panel-meta">this month</span>
+        </div>
+        <div class="panel-body">
+          <div class="churn-num">3<span class="unit"> cancellations</span></div>
+          <div class="churn-meta"><span class="down">▼ 0.6%</span> monthly churn rate</div>
+          <div class="churn-meta" style="margin-top:14px;">Logo churn is below the 2% SaaS healthy benchmark. Retention is strong — once embedded, businesses rarely leave.</div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ===================== ROW 4: MSGS BY DAY + POPULAR QUESTIONS ===================== -->
+    <div class="row row-12">
+      <!-- Messages by day -->
+      <section class="panel col-8" aria-label="Messages handled by day">
+        <div class="panel-head">
+          <span class="panel-title"><span class="marker"></span>Messages Handled &middot; Last 14 Days</span>
+          <span class="panel-meta">volume</span>
+        </div>
+        <div class="panel-body">
+          <div class="bars" id="bars"></div>
+          <div class="bars-x" id="barsX"></div>
+        </div>
+      </section>
+
+      <!-- Popular questions -->
+      <section class="panel col-4" aria-label="Popular questions across all chatbots">
+        <div class="panel-head">
+          <span class="panel-title"><span class="marker"></span>Popular Questions</span>
+          <span class="panel-meta">aggregated</span>
+        </div>
+        <div class="panel-body">
+          <div class="q-list" id="qList"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ===================== ROW 5: RECENT SIGNUPS + ACTIVITY ===================== -->
+    <div class="row row-12">
+      <!-- Recent signups -->
+      <section class="panel col-7" aria-label="Recent signups">
+        <div class="panel-head">
+          <span class="panel-title"><span class="marker"></span>Recent Signups</span>
+          <span class="panel-meta">last 10 businesses</span>
+        </div>
+        <div class="panel-body" style="padding:6px 4px 10px;">
+          <table class="tbl">
+            <thead>
+              <tr><th>Business</th><th>Plan</th><th>Status</th><th class="mono" style="text-align:right;">Joined</th></tr>
+            </thead>
+            <tbody id="signupsBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Live activity feed -->
+      <section class="panel col-5" aria-label="Live activity feed">
+        <div class="panel-head">
+          <span class="panel-title"><span class="marker"></span>Live Activity</span>
+          <span class="panel-meta"><span class="dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399;vertical-align:middle;margin-right:5px;"></span>real-time</span>
+        </div>
+        <div class="panel-body">
+          <div class="feed" id="feed"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ===================== ROW 6: REGIONS ===================== -->
+    <div class="row row-12">
+      <section class="panel col-6" aria-label="Messages by region">
+        <div class="panel-head">
+          <span class="panel-title"><span class="marker"></span>Messages by Region</span>
+          <span class="panel-meta">all time</span>
+        </div>
+        <div class="panel-body" id="regions"></div>
+      </section>
+
+      <section class="panel col-6" aria-label="Plan distribution">
+        <div class="panel-head">
+          <span class="panel-title"><span class="marker"></span>Plan Distribution</span>
+          <span class="panel-meta">247 businesses</span>
+        </div>
+        <div class="panel-body">
+          <div class="funnel">
+            <div class="funnel-stage s3">
+              <div class="fl-row"><span class="fl-name">Free</span><span class="fl-num mono">80 <span class="pct">(32.4%)</span></span></div>
+              <div class="fl-track"><div class="fl-fill" style="width:32.4%"></div></div>
+            </div>
+            <div class="funnel-stage s1">
+              <div class="fl-row"><span class="fl-name">Pro · $29/mo</span><span class="fl-num mono">148 <span class="pct">(59.9%)</span></span></div>
+              <div class="fl-track"><div class="fl-fill" style="width:59.9%"></div></div>
+            </div>
+            <div class="funnel-stage s4">
+              <div class="fl-row"><span class="fl-name">Business · $99/mo</span><span class="fl-num mono">19 <span class="pct">(7.7%)</span></span></div>
+              <div class="fl-track"><div class="fl-fill" style="width:7.7%"></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="hud-foot">
+      <span>REPLYFOX OPS</span> &middot; mock data for preview &middot; v1.0 &middot; <span>auto-refresh 30s</span>
+    </div>
+  </main>
+
+  <script>
+  (function () {
+    'use strict';
+    var $ = function (s, r) { return (r || document).querySelector(s); };
+    var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+    /* ---------- Clock ---------- */
+    function tick() {
+      var d = new Date();
+      var pad = function (n) { return String(n).padStart(2, '0'); };
+      $('#clock').textContent = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+      $('#date').textContent = d.toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) + ' · ' + d.toLocaleString('en-US', { timeZoneName: 'short' }).split(' ').slice(-1)[0];
+    }
+    tick(); setInterval(tick, 1000);
+
+    /* ---------- Sparkline (hero) ---------- */
+    (function () {
+      var svg = $('#sparkline'); if (!svg) return;
+      var vals = [12, 15, 13, 18, 16, 22, 20, 26, 30, 28, 35, 42];
+      var W = 90, H = 26, max = Math.max.apply(null, vals), min = Math.min.apply(null, vals);
+      var pts = vals.map(function (v, i) { return [(i / (vals.length - 1)) * W, H - 2 - ((v - min) / (max - min)) * (H - 4)]; });
+      var d = pts.map(function (p, i) { return (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' ');
+      svg.innerHTML = '<path d="' + d + '" fill="none" stroke="#34d399" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 0 4px #34d399)"/>';
+    })();
+
+    /* ---------- MRR growth chart ---------- */
+    (function () {
+      var svg = $('#mrrChart'); if (!svg) return;
+      var labels = ['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'];
+      var vals = [420, 580, 740, 960, 1180, 1420, 1740, 2120, 2680, 3340, 4107, 4855];
+      var W = svg.clientWidth || 800, H = 240, m = { t: 14, r: 16, b: 28, l: 46 };
+      var iw = W - m.l - m.r, ih = H - m.t - m.b;
+      var max = Math.ceil(Math.max.apply(null, vals) / 1000) * 1000;
+      var stepX = iw / (vals.length - 1);
+      var pts = vals.map(function (v, i) { return { x: m.l + i * stepX, y: m.t + ih - (v / max) * ih }; });
+      var line = pts.map(function (p, i) { return (i ? 'L' : 'M') + p.x.toFixed(1) + ' ' + p.y.toFixed(1); }).join(' ');
+      var area = line + ' L' + pts[pts.length - 1].x.toFixed(1) + ' ' + (m.t + ih) + ' L' + pts[0].x.toFixed(1) + ' ' + (m.t + ih) + ' Z';
+      var yTicks = '', yC = 5;
+      for (var t = 0; t <= yC; t++) {
+        var val = Math.round(max * (1 - t / yC));
+        var y = m.t + (ih * t / yC);
+        yTicks += '<line x1="' + m.l + '" y1="' + y + '" x2="' + (m.l + iw) + '" y2="' + y + '"></line>';
+        yTicks += '<text x="' + (m.l - 10) + '" y="' + (y + 3) + '" text-anchor="end">$' + (val >= 1000 ? (val / 1000) + 'k' : val) + '</text>';
+      }
+      var xTicks = pts.map(function (p, i) { return '<text x="' + p.x + '" y="' + (m.t + ih + 18) + '" text-anchor="middle">' + labels[i] + '</text>'; }).join('');
+      var gid = 'mrr-grad';
+      svg.innerHTML =
+        '<defs><linearGradient id="' + gid + '" x1="0" y1="0" x2="0" y2="1">' +
+          '<stop offset="0%" stop-color="#22d3ee" stop-opacity="0.35"></stop>' +
+          '<stop offset="100%" stop-color="#22d3ee" stop-opacity="0"></stop>' +
+        '</linearGradient></defs>' +
+        '<g class="grid">' + yTicks + '</g>' +
+        '<path class="area" d="' + area + '" fill="url(#' + gid + ')"></path>' +
+        '<path class="series-glow" d="' + line + '"></path>' +
+        '<path class="series" d="' + line + '"></path>' +
+        pts.map(function (p, i) { return '<circle class="dot" cx="' + p.x + '" cy="' + p.y + '" r="3"></circle>'; }).join('') +
+        '<g class="axis">' + xTicks + '</g>';
+    })();
+
+    /* ---------- Health rings ---------- */
+    $$('.meter .prog').forEach(function (c) {
+      var r = 46, C = 2 * Math.PI * r;
+      var pct = parseFloat(c.getAttribute('data-pct')) || 0;
+      c.setAttribute('stroke-dasharray', C.toFixed(1));
+      c.setAttribute('stroke-dashoffset', (C * (1 - pct / 100)).toFixed(1));
+    });
+
+    /* ---------- Bars (messages by day) ---------- */
+    (function () {
+      var vals = [620, 540, 710, 680, 760, 420, 390, 700, 660, 790, 820, 880, 940, 1284];
+      var max = Math.max.apply(null, vals);
+      var host = $('#bars'); host.innerHTML = '';
+      var xh = $('#barsX'); xh.innerHTML = '';
+      var days = ['Tu', 'W', 'Th', 'F', 'Sa', 'Su', 'M', 'Tu', 'W', 'Th', 'F', 'Sa', 'Su', 'M'];
+      vals.forEach(function (v, i) {
+        var b = document.createElement('div');
+        b.className = 'bar' + (i === vals.length - 1 ? ' today' : '');
+        b.style.height = ((v / max) * 100) + '%';
+        b.setAttribute('title', v + ' messages');
+        host.appendChild(b);
+        var x = document.createElement('span'); x.textContent = days[i]; xh.appendChild(x);
+      });
+    })();
+
+    /* ---------- Popular questions ---------- */
+    (function () {
+      var qs = [
+        { q: 'What are your hours?', n: 3120 },
+        { q: 'Do you ship internationally?', n: 2840 },
+        { q: 'How much does it cost?', n: 2610 },
+        { q: 'What is your return policy?', n: 1980 },
+        { q: 'Do you offer refunds?', n: 1640 },
+        { q: 'How do I track my order?', n: 1420 },
+        { q: 'Can I speak to a human?', n: 980 }
+      ];
+      var max = qs[0].n, host = $('#qList'); host.innerHTML = '';
+      qs.forEach(function (item, i) {
+        var row = document.createElement('div'); row.className = 'q-row';
+        row.innerHTML =
+          '<span class="rank">' + (i + 1) + '</span>' +
+          '<div><div class="qq">' + item.q + '</div><div class="qbar"><div class="qf" style="width:' + Math.round(item.n / max * 100) + '%"></div></div></div>' +
+          '<span class="cnt">' + item.n.toLocaleString() + '</span>';
+        host.appendChild(row);
+      });
+    })();
+
+    /* ---------- Recent signups ---------- */
+    (function () {
+      var rows = [
+        { biz: 'Meridian Law Group', plan: 'biz', who: 'ML', when: '3m ago' },
+        { biz: 'Bloom & Co. Florist', plan: 'pro', who: 'BC', when: '18m ago' },
+        { biz: 'Apex Fitness Studio', plan: 'pro', who: 'AF', when: '42m ago' },
+        { biz: 'Northside Dental', plan: 'pro', who: 'ND', when: '1h ago' },
+        { biz: 'Verdant Design Co.', plan: 'free', who: 'VD', when: '2h ago' },
+        { biz: 'Pawsome Grooming', plan: 'pro', who: 'PG', when: '3h ago' },
+        { biz: 'Tint & Tone Auto', plan: 'free', who: 'TT', when: '4h ago' },
+        { biz: 'Lakeside Bistro', plan: 'pro', who: 'LB', when: '6h ago' },
+        { biz: 'Bright Smiles Clinic', plan: 'biz', who: 'BS', when: '9h ago' },
+        { biz: 'Urban Threads Apparel', plan: 'pro', who: 'UT', when: '11h ago' }
+      ];
+      var planLabel = { free: 'Free', pro: 'Pro', biz: 'Business' };
+      var body = $('#signupsBody'); body.innerHTML = '';
+      rows.forEach(function (r) {
+        var tr = document.createElement('tr');
+        tr.innerHTML =
+          '<td><div class="who"><span class="av">' + r.who + '</span><span class="biz">' + r.biz + '</span></div></td>' +
+          '<td><span class="tag ' + r.plan + '">' + planLabel[r.plan] + '</span></td>' +
+          '<td><span class="tag live">Live</span></td>' +
+          '<td class="mono" style="text-align:right;">' + r.when + '</td>';
+        body.appendChild(tr);
+      });
+    })();
+
+    /* ---------- Regions ---------- */
+    (function () {
+      var regs = [
+        { name: 'United States', n: 38420 }, { name: 'United Kingdom', n: 14210 },
+        { name: 'Canada', n: 9840 }, { name: 'Australia', n: 7120 },
+        { name: 'Germany', n: 5310 }, { name: 'Other', n: 7531 }
+      ];
+      var max = regs[0].n, host = $('#regions'); host.innerHTML = '';
+      regs.forEach(function (r) {
+        var d = document.createElement('div'); d.className = 'region';
+        d.innerHTML = '<span class="rname">' + r.name + '</span>' +
+          '<span class="rbar"><span class="rf" style="width:' + Math.round(r.n / max * 100) + '%"></span></span>' +
+          '<span class="rcnt">' + r.n.toLocaleString() + '</span>';
+        host.appendChild(d);
+      });
+    })();
+
+    /* ---------- Live activity feed ---------- */
+    var feed = $('#feed');
+    var templates = [
+      { ic: 'ic-green', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14m-7-7h14" stroke-linecap="round"/></svg>', t: function () { return '<b>' + randBiz() + '</b> upgraded to <b>Pro</b>'; } },
+      { ic: 'ic-cyan', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9l-4 4v-4H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" stroke-linejoin="round"/></svg>', t: function () { return '<b>' + randBiz() + '</b> sent a new message'; } },
+      { ic: 'ic-violet', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 16 11" stroke-linecap="round" stroke-linejoin="round"/></svg>', t: function () { return '<b>' + randBiz() + '</b> signed up'; } },
+      { ic: 'ic-teal', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 11h10M7 7h6m-9-3h12a1 1 0 0 1 1 1v14l-4-3H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z" stroke-linejoin="round"/></svg>', t: function () { return 'New lead captured for <b>' + randBiz() + '</b>'; } },
+      { ic: 'ic-amber', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14" stroke-linecap="round" stroke-linejoin="round"/></svg>', t: function () { return '<b>' + randBiz() + '</b> added knowledge base content'; } }
+    ];
+    var bizPool = ['Bloom & Co.', 'Meridian Law', 'Apex Fitness', 'Northside Dental', 'Verdant Design', 'Pawsome Grooming', 'Lakeside Bistro', 'Urban Threads', 'Bright Smiles', 'Tint & Tone'];
+    function randBiz() { return bizPool[Math.floor(Math.random() * bizPool.length)]; }
+    function relTime() { var n = Math.floor(Math.random() * 50) + 1; return n + 's ago'; }
+    function addFeed(initial) {
+      var tpl = templates[Math.floor(Math.random() * templates.length)];
+      var item = document.createElement('div'); item.className = 'feed-item';
+      item.innerHTML = '<span class="fic ' + tpl.ic + '">' + tpl.svg + '</span><div class="fbody"><div class="ftxt">' + tpl.t() + '</div><div class="ftime">' + relTime() + '</div></div>';
+      feed.insertBefore(item, feed.firstChild);
+      while (feed.children.length > 10) feed.removeChild(feed.lastChild);
+      if (!initial) item.style.opacity = '0', item.style.transform = 'translateY(-8px)', requestAnimationFrame(function () { item.style.transition = 'opacity .35s ease, transform .35s ease'; item.style.opacity = '1'; item.style.transform = 'none'; });
+    }
+    for (var i = 0; i < 7; i++) addFeed(true);
+    setInterval(addFeed, 4200);
+
+    /* ---------- Live counters ---------- */
+    var msgToday = 1284;
+    setInterval(function () {
+      var inc = Math.floor(Math.random() * 8) + 1;
+      msgToday += inc;
+      $('#kpiMsgToday').textContent = msgToday.toLocaleString();
+      $('#msgRate').textContent = '▲ ' + (inc * 12) + '/min';
+    }, 5000);
+  })();
+  </script>
+</body>
+</html>

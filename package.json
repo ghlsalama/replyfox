@@ -1,0 +1,19 @@
+{
+  "name": "replyfox",
+  "version": "1.0.0",
+  "description": "ReplyFox — AI customer support chatbot platform. Backend API + embeddable widget.",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test \"src/test/**/*.test.js\""
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}

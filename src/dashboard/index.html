@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReplyFox — Dashboard</title>
+  <meta name="description" content="Manage your ReplyFox chatbot: training, customization, analytics, and billing." />
+  <meta name="theme-color" content="#0b1626" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============================================================
+       ONBOARDING VIEW (shown on first visit)
+       ============================================================ -->
+  <div class="onboard" id="onboarding" hidden>
+    <div class="onboard-card" role="dialog" aria-labelledby="obTitle">
+      <div class="onboard-head">
+        <a href="../landing/index.html" class="brand" aria-label="ReplyFox">
+          <span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9l-4 4v-4H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" fill="#fff"/></svg></span>
+          ReplyFox
+        </a>
+        <div class="onboard-steps" id="obSteps" aria-hidden="true"></div>
+      </div>
+
+      <div class="onboard-body">
+        <!-- Step 1: business name -->
+        <section class="ob-step active" data-step="1">
+          <h2 id="obTitle">Welcome to ReplyFox</h2>
+          <p class="ob-sub">Let's get your AI chatbot set up. First, what's your business called?</p>
+          <div class="field">
+            <label for="bizName">Business name</label>
+            <input type="text" id="bizName" placeholder="e.g. Bloom & Co. Florist" autocomplete="organization" />
+            <p class="hint">This appears in your chat widget header and in the bot's responses.</p>
+          </div>
+          <div class="field">
+            <label for="bizEmail">Your email</label>
+            <input type="email" id="bizEmail" placeholder="you@yourbusiness.com" autocomplete="email" />
+          </div>
+        </section>
+
+        <!-- Step 2: knowledge -->
+        <section class="ob-step" data-step="2">
+          <h2>Add your knowledge</h2>
+          <p class="ob-sub">Where should ReplyFox learn about your business?</p>
+          <div class="src-tabs" role="tablist">
+            <button class="src-tab active" data-src="url" role="tab" aria-selected="true"><span class="sti">🔗</span><span class="stl">Website URL</span></button>
+            <button class="src-tab" data-src="text" role="tab" aria-selected="false"><span class="sti">📝</span><span class="stl">Paste text</span></button>
+            <button class="src-tab" data-src="file" role="tab" aria-selected="false"><span class="sti">📄</span><span class="stl">Upload file</span></button>
+          </div>
+          <div class="field" data-srcfield="url">
+            <label for="srcUrl">Website URL</label>
+            <input type="url" id="srcUrl" placeholder="https://yourbusiness.com" />
+            <p class="hint">We'll read your public pages and build a knowledge base from them.</p>
+          </div>
+          <div class="field" data-srcfield="text" hidden>
+            <label for="srcText">Paste your FAQ or business info</label>
+            <textarea id="srcText" placeholder="Hours: Mon–Fri 9am–6pm&#10;We ship internationally. Standard delivery 5–8 days.&#10;Returns accepted within 30 days..."></textarea>
+          </div>
+          <div class="field" data-srcfield="file" hidden>
+            <label for="srcFile">Upload a document</label>
+            <input type="file" id="srcFile" accept=".txt,.pdf,.md,.docx" />
+            <p class="hint">Accepted: .txt, .pdf, .md, .docx (max 2MB in this demo).</p>
+          </div>
+          <div id="trainStatus" class="hint" role="status" aria-live="polite"></div>
+        </section>
+
+        <!-- Step 3: customize -->
+        <section class="ob-step" data-step="3">
+          <h2>Customize your widget</h2>
+          <p class="ob-sub">Make it match your brand. You can change this anytime.</p>
+          <div class="field">
+            <label>Widget color</label>
+            <div class="color-presets" id="colorPresets"></div>
+            <input type="color" id="widgetColor" value="#1763e6" aria-label="Custom widget color" />
+          </div>
+          <div class="field">
+            <label for="widgetGreeting">Greeting message</label>
+            <input type="text" id="widgetGreeting" value="Hi! 👋 How can I help you today?" />
+          </div>
+          <div class="field">
+            <label for="widgetAvatar">Avatar</label>
+            <div class="avatar-opts" id="avatarOpts"></div>
+          </div>
+          <div class="field">
+            <label>Position</label>
+            <div class="seg" id="positionSeg" role="group" aria-label="Widget position">
+              <button data-pos="bottom-right" class="active">Bottom right</button>
+              <button data-pos="bottom-left">Bottom left</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 4: embed -->
+        <section class="ob-step" data-step="4">
+          <h2>Embed on your website</h2>
+          <p class="ob-sub">Copy this one line and paste it before the closing <code>&lt;/body&gt;</code> tag of your site.</p>
+          <div class="code-block">
+            <button class="copy-btn" id="copyEmbed" type="button">Copy</button>
+            <pre id="embedCode"></pre>
+          </div>
+          <p class="hint" style="margin-top:14px;">Using Shopify, WordPress, Wix or Squarespace? Paste it into the "header" or "custom code" section of your site settings.</p>
+        </section>
+
+        <!-- Step 5: success -->
+        <section class="ob-step" data-step="5">
+          <div class="ob-success">
+            <div class="check" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 13 4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h2>You're live! 🎉</h2>
+            <p class="ob-sub">Your chatbot is ready. Head to your dashboard to see conversations, analytics, and captured leads as they come in.</p>
+            <button class="btn btn-primary" id="goToDashboard">Go to Dashboard →</button>
+          </div>
+        </section>
+      </div>
+
+      <div class="onboard-foot">
+        <button class="btn btn-ghost" id="obBack" disabled>← Back</button>
+        <button class="btn btn-primary" id="obNext">Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MAIN APP SHELL
+       ============================================================ -->
+  <div class="app" id="appShell" hidden>
+    <div class="nav-backdrop" id="navBackdrop"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <a href="../landing/index.html" class="brand">
+        <span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9l-4 4v-4H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" fill="#fff"/></svg></span>
+        ReplyFox
+      </a>
+      <nav class="nav-section" aria-label="Dashboard navigation">
+        <div class="nav-label">Main</div>
+        <button class="nav-item active" data-page="home">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12 12 4l9 8M5 10v10h5v-6h4v6h5V10" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Dashboard
+        </button>
+        <button class="nav-item" data-page="knowledge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5a2 2 0 0 1 2-2h7v16H6a2 2 0 0 0-2 2V5ZM20 5a2 2 0 0 0-2-2h-7v16h7a2 2 0 0 0 2 2V5Z" stroke-linejoin="round"/></svg>
+          Knowledge Base
+        </button>
+        <button class="nav-item" data-page="customize">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12a10 10 0 1 0 10-10M2 12l4-1m-4 1 1 4M12 2 9 6m3-4 4 4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3"/></svg>
+          Customize
+        </button>
+        <button class="nav-item" data-page="analytics">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5m0 14h16M8 16V9m4 7V6m4 10v-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Analytics
+        </button>
+        <div class="nav-label">Account</div>
+        <button class="nav-item" data-page="billing">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M2.5 10h19" stroke-linecap="round"/></svg>
+          Billing
+        </button>
+        <button class="nav-item" data-page="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 7 19.4a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.6 1.6 0 0 0 2.6 14H2.5a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 4 8.6a1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.6 1.6 0 0 0 10 2.6V2.5a2 2 0 1 1 4 0v.1A1.6 1.6 0 0 0 17 4a1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V8.6a1.6 1.6 0 0 0 1.4 1.4h.1a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.3 1Z" stroke-linejoin="round"/></svg>
+          Settings
+        </button>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="plan-chip">
+          <div class="pl">Current plan<strong id="sidePlan">Free</strong></div>
+          <button class="up" data-page="billing">Upgrade</button>
+        </div>
+        <div class="user-chip">
+          <span class="avatar-sm" id="sideAvatar">B</span>
+          <div>
+            <div class="u-name" id="sideName">Your Business</div>
+            <div class="u-email" id="sideEmail">you@email.com</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="main">
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="menu-btn" id="menuBtn" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round"/></svg></button>
+          <div class="crumb">ReplyFox / <strong id="crumbPage">Dashboard</strong></div>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-ghost btn-sm" id="topEmbed">Get embed code</button>
+          <a href="../landing/index.html" class="btn btn-ghost btn-sm">View site</a>
+        </div>
+      </header>
+
+      <div class="content">
+        <!-- ============== HOME ============== -->
+        <section class="page active" id="page-home">
+          <div class="page-head">
+            <h1>Good to see you, <span id="homeName">there</span> 👋</h1>
+            <p>Here's how your chatbot is performing this month.</p>
+          </div>
+
+          <div class="usage-bar" id="usageBar">
+            <div class="ub-info">
+              <div><span class="ub-num" id="ubUsed">0</span> of <span id="ubQuota">50</span> free messages used this month</div>
+              <div class="track"><div class="fill" id="ubFill" style="width:0%"></div></div>
+            </div>
+            <button class="btn btn-primary btn-sm" data-page="billing">Upgrade to Pro →</button>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <div class="sicon ic-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9l-4 4v-4H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" stroke-linejoin="round"/></svg></div>
+              <div class="slabel">Messages this month</div>
+              <div class="sval" id="stMessages">0</div>
+              <div class="sdelta up" id="stMessagesDelta">▲ 0% vs last month</div>
+            </div>
+            <div class="stat">
+              <div class="sicon ic-teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 11a4 4 0 1 0-8 0 4 4 0 0 0 8 0Z" stroke-linejoin="round"/><path d="M4 20a8 8 0 0 1 16 0M12 2v2" stroke-linecap="round"/></svg></div>
+              <div class="slabel">Active conversations</div>
+              <div class="sval" id="stConvos">0</div>
+              <div class="sdelta up">▲ live now</div>
+            </div>
+            <div class="stat">
+              <div class="sicon ic-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h12a4 4 0 0 1 4 4v0a4 4 0 0 1-4 4h-2M4 6l3 3m-3-3 3-3M4 18h12a4 4 0 0 0 4-4v0" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="slabel">Emails captured</div>
+              <div class="sval" id="stLeads">0</div>
+              <div class="sdelta up" id="stLeadsDelta">▲ 0% vs last month</div>
+            </div>
+            <div class="stat">
+              <div class="sicon ic-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 11h10M7 7h6m-9-3h12a1 1 0 0 1 1 1v14l-4-3H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z" stroke-linejoin="round"/></svg></div>
+              <div class="slabel">Satisfaction rate</div>
+              <div class="sval" id="stSat">—</div>
+              <div class="sdelta up">Based on 👍 / 👎</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <h2>Recent conversations</h2>
+              <span class="sub">Last 10 visitor chats</span>
+            </div>
+            <div class="conv-list" id="convList"></div>
+          </div>
+        </section>
+
+        <!-- ============== KNOWLEDGE BASE ============== -->
+        <section class="page" id="page-knowledge">
+          <div class="page-head">
+            <h1>Knowledge Base</h1>
+            <p>This is what your chatbot knows. Add more to improve its answers.</p>
+          </div>
+
+          <div class="kb-stats">
+            <div class="kb-stat"><div class="kl">Characters</div><div class="kv" id="kbChars">0</div></div>
+            <div class="kb-stat"><div class="kl">Estimated chunks</div><div class="kv" id="kbChunks">0</div></div>
+            <div class="kb-stat"><div class="kl">Sources</div><div class="kv" id="kbSources">0</div></div>
+          </div>
+
+          <div class="card" style="margin-bottom:22px;">
+            <div class="card-head">
+              <h2>Content quality</h2>
+              <span class="sub" id="kbQualityLabel">Based on length &amp; structure</span>
+            </div>
+            <div class="card-pad">
+              <div class="quality-ring">
+                <div class="qr-circle" id="qrCircle" style="--p:80"><span id="qrPct">80%</span></div>
+                <div>
+                  <h3 id="qrTitle">Good foundation</h3>
+                  <p style="margin:0;color:var(--rf-muted);font-size:.9rem;" id="qrMsg">Your bot can answer most common questions. Add pricing, policies, and shipping details to cover more.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h2>Current content</h2></div>
+            <div class="card-pad">
+              <div class="kb-content" id="kbContent"></div>
+            </div>
+            <div class="card-head" style="border-top:1px solid var(--rf-line-2);">
+              <h2>Add more content</h2>
+            </div>
+            <div class="card-pad">
+              <div class="src-tabs" role="tablist" style="margin-bottom:14px;">
+                <button class="src-tab active" data-src="url" role="tab" aria-selected="true"><span class="sti">🔗</span><span class="stl">Website URL</span></button>
+                <button class="src-tab" data-src="text" role="tab" aria-selected="false"><span class="sti">📝</span><span class="stl">Paste text</span></button>
+                <button class="src-tab" data-src="file" role="tab" aria-selected="false"><span class="sti">📄</span><span class="stl">Upload file</span></button>
+              </div>
+              <div class="field" data-srcfield="url">
+                <label for="kbSrcUrl">Website URL</label>
+                <input type="url" id="kbSrcUrl" placeholder="https://yourbusiness.com/faq" />
+              </div>
+              <div class="field" data-srcfield="text" hidden>
+                <label for="kbSrcText">Paste your content</label>
+                <textarea id="kbSrcText" placeholder="Paste FAQ, policies, product info..."></textarea>
+              </div>
+              <div class="field" data-srcfield="file" hidden>
+                <label for="kbSrcFile">Upload file</label>
+                <input type="file" id="kbSrcFile" accept=".txt,.pdf,.md,.docx" />
+              </div>
+              <button class="btn btn-primary" id="kbTrainBtn">Train chatbot</button>
+              <span id="kbTrainStatus" class="hint" role="status" aria-live="polite" style="margin-left:10px;"></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============== CUSTOMIZE ============== -->
+        <section class="page" id="page-customize">
+          <div class="page-head">
+            <h1>Customize your widget</h1>
+            <p>Change the look and behavior. The preview updates instantly.</p>
+          </div>
+          <div class="customize-grid">
+            <div class="card card-pad">
+              <div class="field">
+                <label for="cName">Business name</label>
+                <input type="text" id="cName" />
+              </div>
+              <div class="field">
+                <label>Widget color</label>
+                <div class="color-presets" id="cColorPresets"></div>
+                <input type="color" id="cColor" value="#1763e6" aria-label="Custom widget color" />
+              </div>
+              <div class="field">
+                <label for="cGreeting">Greeting message</label>
+                <input type="text" id="cGreeting" />
+              </div>
+              <div class="field">
+                <label for="cAvatar">Avatar</label>
+                <div class="avatar-opts" id="cAvatarOpts"></div>
+              </div>
+              <div class="field">
+                <label>Position</label>
+                <div class="seg" id="cPositionSeg" role="group" aria-label="Widget position">
+                  <button data-pos="bottom-right" class="active">Bottom right</button>
+                  <button data-pos="bottom-left">Bottom left</button>
+                </div>
+              </div>
+              <div class="field">
+                <label>Business hours (optional)</label>
+                <div class="seg" id="cHoursSeg" role="group" aria-label="Business hours toggle">
+                  <button data-hours="off" class="active">Always on (24/7)</button>
+                  <button data-hours="on">Set hours</button>
+                </div>
+                <p class="hint" id="cHoursHint">Outside hours, the bot says: <em>"We're currently closed. Leave your email and we'll get back to you."</em></p>
+              </div>
+              <button class="btn btn-primary" id="cSave">Save changes</button>
+            </div>
+
+            <!-- Live preview -->
+            <div class="preview-pane">
+              <div class="pv-label">Live preview</div>
+              <div class="preview-stage" id="previewStage">
+                <div class="fake-site">
+                  <div class="fbar"><i></i><i></i><i></i></div>
+                  <div class="ftitle"></div>
+                  <div class="fline"></div><div class="fline short"></div><div class="fline"></div>
+                  <div class="fline"></div><div class="fline short"></div>
+                </div>
+                <div class="pv-bubble" id="pvBubble"></div>
+                <div class="pv-window" id="pvWindow" hidden>
+                  <div class="pv-head">
+                    <span class="pv-av" id="pvAvatar">🤖</span>
+                    <div><div class="pv-title" id="pvTitle">Your Business</div><div class="pv-status">● Online</div></div>
+                  </div>
+                  <div class="pv-body">
+                    <div class="pv-msg bot" id="pvGreeting">Hi! 👋</div>
+                    <div class="pv-msg vis">Do you ship internationally?</div>
+                    <div class="pv-msg bot">Yes! We ship worldwide. Delivery takes 5–8 days.</div>
+                  </div>
+                  <div class="pv-input">
+                    <div class="fake-field">Type a message...</div>
+                    <div class="fake-send" id="pvSend"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============== ANALYTICS ============== -->
+        <section class="page" id="page-analytics">
+          <div class="page-head">
+            <h1>Analytics</h1>
+            <p>Understand what your visitors ask and how your bot performs.</p>
+          </div>
+          <div class="stats">
+            <div class="stat">
+              <div class="sicon ic-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5m0 14h16M8 16V9m4 7V6m4 10v-4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="slabel">Total messages (30d)</div>
+              <div class="sval" id="anTotal">0</div>
+            </div>
+            <div class="stat">
+              <div class="sicon ic-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 11h10M7 7h6m-9-3h12a1 1 0 0 1 1 1v14l-4-3H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z" stroke-linejoin="round"/></svg></div>
+              <div class="slabel">Escalation rate</div>
+              <div class="sval" id="anEsc">—</div>
+              <div class="sdelta">Questions needing follow-up</div>
+            </div>
+            <div class="stat">
+              <div class="sicon ic-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 11h10M7 7h6m-9-3h12a1 1 0 0 1 1 1v14l-4-3H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z" stroke-linejoin="round"/></svg></div>
+              <div class="slabel">Satisfaction</div>
+              <div class="sval" id="anSat">—</div>
+              <div class="sdelta up">👍 on responses</div>
+            </div>
+            <div class="stat">
+              <div class="sicon ic-teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h12a4 4 0 0 1 4 4v0a4 4 0 0 1-4 4h-2M4 6l3 3m-3-3 3-3M4 18h12a4 4 0 0 0 4-4v0" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="slabel">Email capture rate</div>
+              <div class="sval" id="anConv">—</div>
+              <div class="sdelta">Chats → captured leads</div>
+            </div>
+          </div>
+
+          <div class="chart-card" style="margin-bottom:22px;">
+            <div class="card-head">
+              <h2>Messages over time</h2>
+              <div class="seg" role="group" aria-label="Time range">
+                <button data-range="7" class="active">7 days</button>
+                <button data-range="30">30 days</button>
+              </div>
+            </div>
+            <div class="chart-wrap" style="position:relative;">
+              <div class="legend"><span class="lg"><span class="sw" style="background:#1763e6"></span>Messages</span></div>
+              <svg class="rf-chart" id="msgChart" role="img" aria-label="Line chart of messages over time"></svg>
+              <div class="rf-tooltip" id="chartTooltip"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h2>Top questions</h2><span class="sub">Most asked by visitors</span></div>
+            <div id="topQuestions"></div>
+          </div>
+        </section>
+
+        <!-- ============== BILLING ============== -->
+        <section class="page" id="page-billing">
+          <div class="page-head">
+            <h1>Billing</h1>
+            <p>Manage your subscription and payment history.</p>
+          </div>
+          <div class="card card-pad" style="margin-bottom:22px;">
+            <div class="plan-current">
+              <div>
+                <div class="pname" id="billPlan">Free plan</div>
+                <div class="pprice" id="billPlanDetail">$0/month · 50 messages</div>
+              </div>
+              <span class="badge free" id="billBadge">FREE</span>
+            </div>
+          </div>
+          <h2 style="margin-bottom:14px;">Available plans</h2>
+          <div class="bill-grid" style="margin-bottom:22px;">
+            <div class="plan-mini">
+              <div class="pn">Pro</div>
+              <div class="pp">$29<span class="per">/month</span></div>
+              <ul>
+                <li>Unlimited messages</li>
+                <li>5 knowledge bases</li>
+                <li>Full analytics</li>
+                <li>Business hours</li>
+              </ul>
+              <button class="btn btn-primary btn-block" id="upgradePro">Upgrade to Pro</button>
+            </div>
+            <div class="plan-mini featured">
+              <div class="pn">Business</div>
+              <div class="pp">$99<span class="per">/month</span></div>
+              <ul>
+                <li>Everything in Pro</li>
+                <li>White-label</li>
+                <li>Multi-seat (5)</li>
+                <li>API access &amp; priority support</li>
+              </ul>
+              <button class="btn btn-solid btn-block" id="upgradeBiz">Go Business</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h2>Payment history</h2></div>
+            <div class="card-pad" id="invoiceList">
+              <div class="empty"><div class="ei">🧾</div>No invoices yet — you're on the free plan.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============== SETTINGS ============== -->
+        <section class="page" id="page-settings">
+          <div class="page-head">
+            <h1>Settings</h1>
+            <p>Manage your account, API access, and data.</p>
+          </div>
+          <div class="card card-pad" style="margin-bottom:22px;">
+            <h2 style="margin-bottom:6px;">Account</h2>
+            <div class="setting-row">
+              <div class="sinfo"><h4>Email</h4><p id="setEmail">you@email.com</p></div>
+              <button class="btn btn-ghost btn-sm">Change</button>
+            </div>
+            <div class="setting-row">
+              <div class="sinfo"><h4>Password</h4><p>••••••••</p></div>
+              <button class="btn btn-ghost btn-sm">Reset</button>
+            </div>
+            <div class="setting-row">
+              <div class="sinfo"><h4>Business key</h4><p>Your public widget identifier</p></div>
+              <div class="api-key-row"><code id="setBizKey">—</code><button class="btn btn-ghost btn-sm" id="copyKey">Copy</button></div>
+            </div>
+            <div class="setting-row">
+              <div class="sinfo"><h4>API key</h4><p>For advanced integrations (Business plan)</p></div>
+              <div class="api-key-row"><code id="setApiKey">—</code><button class="btn btn-ghost btn-sm" id="revealKey">Reveal</button></div>
+            </div>
+          </div>
+          <div class="card card-pad">
+            <h2 style="margin-bottom:6px;color:var(--rf-red);">Danger zone</h2>
+            <div class="setting-row">
+              <div class="sinfo"><h4>Delete account</h4><p>Permanently delete your business, knowledge base, and all conversations.</p></div>
+              <button class="btn btn-danger btn-sm" id="deleteAccount">Delete account</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-wrap" id="toastWrap" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
