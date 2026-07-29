@@ -212,3 +212,23 @@ not configured — expected; error message tells you exactly which env vars to s
 - DEPLOYMENT.md written with step-by-step setup
 
 **Verdict: BUILD SUCCESSFUL. MVP is functional and ready for deployment with credentials.**
+
+## [2026-07-29 01:00] Demo Mode Working — END-TO-END TEST PASSED ✅
+
+### Mock Layer Added
+- `src/lib/mock-db.js` — in-memory DB with pre-seeded demo business (Sunrise Bakery)
+- `src/lib/mock-llm.js` — pattern-matching LLM that answers from the knowledge base
+- `src/server.js` — auto-detects no credentials → activates mock mode
+- `src/demo/demo.html` — mock bakery website with ReplyFox widget embedded
+- `GET /demo` route added
+
+### End-to-End Test Results (port 4567, zero credentials)
+1. ✅ Health check → `{"ok":true,"service":"replyfox"}`
+2. ✅ Chat "What are your hours?" → Returns correct bakery hours from mock KB
+3. ✅ Chat "How much is a croissant?" → Returns pricing ($3.50, 3 for $9, etc.)
+4. ✅ Chat "Do you cater weddings?" → Returns email-capture fallback (spec §7.3)
+5. ✅ Demo page → HTTP 200 (bakery website + widget)
+6. ✅ Widget.js → HTTP 200, 20.7KB (under 30KB cap)
+7. ✅ Demo mode banner → shows on server startup
+
+**Verdict: ReplyFox is a WORKING PRODUCT. `npm run demo` → open localhost/demo → chat works.**

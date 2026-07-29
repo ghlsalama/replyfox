@@ -27,6 +27,16 @@ import widgetConfig from './api/widget-config.js';
 import billing from './api/billing.js';
 import { parseQuery } from './lib/http.js';
 
+// Auto-detect demo mode: use mock DB/LLM when no credentials are configured.
+const USE_MOCK_DB = !process.env.SUPABASE_URL;
+const USE_MOCK_LLM = !process.env.GROQ_API_KEY && !process.env.LLM_API_KEY;
+const mockDb = USE_MOCK_DB ? (await import('./lib/mock-db.js')) : null;
+const mockLlm = USE_MOCK_LLM ? (await import('./lib/mock-llm.js')) : null;
+const DEMO_SERVICES = (USE_MOCK_DB || USE_MOCK_LLM) ? {
+  ...(USE_MOCK_DB ? { db: mockDb } : {}),
+  ...(USE_MOCK_LLM ? { llm: mockLlm } : {}),
+} : undefined;
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const WIDGET_PATH = join(__dirname, 'widget', 'widget.js');
 
@@ -113,6 +123,15 @@ const server = http.createServer(async (req, res) => {
   if (method === 'GET' && (pathname === '/widget.js' || pathname === '/widget.min.js')) {
     return serveWidget(res);
   }
+  // Demo page
+  if (method === 'GET' && pathname === '/demo') {
+    try {
+      const demoHtml = await readFile(join(__dirname, 'demo', 'demo.html'), 'utf8');
+      return send(res, 200, demoHtml, { 'Content-Type': 'text/html; charset=utf-8' });
+    } catch {
+      return sendJson(res, 404, { error: 'demo.html not found' });
+    }
+  }
   if (method === 'GET' && (pathname === '/healthz' || pathname === '/')) {
     return sendJson(res, 200, {
       ok: true,
@@ -162,7 +181,7 @@ const server = http.createServer(async (req, res) => {
   };
 
   try {
-    const result = await handler(ctx);
+    const result = await handler(ctx, DEMO_SERVICES);
     if (result == null) return sendJson(res, 204, {});
     const status = result.status || 200;
     if (result.body === undefined) {
@@ -177,9 +196,17 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`ReplyFox API listening on http://localhost:${PORT}`);
-  console.log(`  widget:  http://localhost:${PORT}/widget.js`);
-  console.log(`  health:  http://localhost:${PORT}/healthz`);
+  console.log(`\n  ┌─────────────────────────────────────────────┐`);
+  console.log(`  │  ReplyFox API listening on :${PORT}             │`);
+  if (DEMO_SERVICES) {
+    console.log(`  │  ⚡ DEMO MODE (mock data — no creds needed)  │`);
+    console.log(`  │  DB: ${USE_MOCK_DB ? 'mock (in-memory)' : 'Supabase'}            LLM: ${USE_MOCK_LLM ? 'mock (pattern)' : 'Groq'}     │`);
+    console.log(`  │  Demo key: demo-key-0001                    │`);
+  }
+  console.log(`  │  widget: http://localhost:${PORT}/widget.js      │`);
+  console.log(`  │  health: http://localhost:${PORT}/healthz      │`);
+  console.log(`  │  demo:   http://localhost:${PORT}/demo         │`);
+  console.log(`  └─────────────────────────────────────────────┘\n`);
 });
 
 export default server;
