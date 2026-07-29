@@ -123,6 +123,43 @@ const server = http.createServer(async (req, res) => {
   if (method === 'GET' && (pathname === '/widget.js' || pathname === '/widget.min.js')) {
     return serveWidget(res);
   }
+  // Landing page (root)
+  if (method === 'GET' && pathname === '/') {
+    try {
+      const html = await readFile(join(__dirname, 'landing', 'index.html'), 'utf8');
+      return send(res, 200, html, { 'Content-Type': 'text/html; charset=utf-8' });
+    } catch {
+      return sendJson(res, 200, { ok: true, service: 'replyfox', note: 'Landing page not found. Visit /demo for the widget demo.' });
+    }
+  }
+  // Landing CSS
+  if (method === 'GET' && pathname === '/landing.css') {
+    try {
+      const css = await readFile(join(__dirname, 'landing', 'style.css'), 'utf8');
+      return send(res, 200, css, { 'Content-Type': 'text/css; charset=utf-8' });
+    } catch { return sendJson(res, 404, { error: 'not found' }); }
+  }
+  // Dashboard
+  if (method === 'GET' && pathname === '/dashboard') {
+    try {
+      const html = await readFile(join(__dirname, 'dashboard', 'index.html'), 'utf8');
+      return send(res, 200, html, { 'Content-Type': 'text/html; charset=utf-8' });
+    } catch {
+      return sendJson(res, 404, { error: 'dashboard not found' });
+    }
+  }
+  if (method === 'GET' && pathname === '/dashboard.css') {
+    try {
+      const css = await readFile(join(__dirname, 'dashboard', 'style.css'), 'utf8');
+      return send(res, 200, css, { 'Content-Type': 'text/css; charset=utf-8' });
+    } catch { return sendJson(res, 404, { error: 'not found' }); }
+  }
+  if (method === 'GET' && pathname === '/dashboard.js') {
+    try {
+      const js = await readFile(join(__dirname, 'dashboard', 'app.js'), 'utf8');
+      return send(res, 200, js, { 'Content-Type': 'application/javascript; charset=utf-8' });
+    } catch { return sendJson(res, 404, { error: 'not found' }); }
+  }
   // Demo page
   if (method === 'GET' && pathname === '/demo') {
     try {
