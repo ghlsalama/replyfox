@@ -232,3 +232,13 @@ not configured — expected; error message tells you exactly which env vars to s
 7. ✅ Demo mode banner → shows on server startup
 
 **Verdict: ReplyFox is a WORKING PRODUCT. `npm run demo` → open localhost/demo → chat works.**
+
+## [2026-07-29 01:15] Deployment Guide + README Written ✅
+- DEPLOYMENT.md: 4-step production setup (Supabase + Groq + Stripe + Render/Vercel), env var reference, post-deploy checklist, troubleshooting
+- README.md: professional GitHub front page with demo instructions, architecture, features, pricing, test coverage, doc links
+- Demo HTML fixed: widget now uses relative URL (/widget.js) — works on any port
+
+## [2026-07-29 01:20] Pushing All Documentation + Mock Layer ✅
+- Files: README.md, DEPLOYMENT.md, src/lib/mock-db.js, src/lib/mock-llm.js, src/demo/demo.html, server.js (mock wiring)
+- Total project files: 25+ (spec, review, deployment, readme, producthunt, outreach, source code, tests, demo)
+- GitHub: github.com/ghlsalama/replyfox — fully documented, ready for deployment
