@@ -8,7 +8,8 @@
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
     "test": "node --test \"src/test/**/*.test.js\"",
-    "demo": "node src/server.js"
+    "demo": "node src/server.js",
+    "demo:open": "node src/server.js & sleep 2 && open http://localhost:3000/demo"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.4"
