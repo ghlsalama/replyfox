@@ -27,67 +27,67 @@ export async function chatCompletion(opts = {}) {
 
   // Greetings.
   if (/^(hi|hello|hey|halo|howdy|good (morning|afternoon|evening))/.test(user)) {
-    return { reply: polish(`Hi there! Welcome to ${bizName}. How can I help you today?` };
+    return { reply: polish(`Hi there! Welcome to ${bizName}. How can I help you today?`) };
   }
 
   // Hours.
   if (user.includes('hour') || user.includes('open') || user.includes('close') || user.includes('when')) {
     const hoursLine = kb.match(/hours?:?([^\n]+)/i);
-    if (hoursLine) return { reply: polish(`Our hours: ${hoursLine[1].trim()}. Come visit us!` };
+    if (hoursLine) return { reply: polish(`Our hours are ${hoursLine[1].trim()}. Come visit us!`) };
   }
 
   // Price / cost.
   if (user.includes('price') || user.includes('cost') || user.includes('how much') || user.includes('expensive')) {
     const priceLines = kb.split('\n').filter(l => /\$|price|cost|fee/i.test(l));
-    if (priceLines.length) return { reply: priceLines.slice(0, 3).join('\n').trim() };
+    if (priceLines.length) return { reply: polish(priceLines.slice(0, 3).join('\n').trim()) };
   }
 
   // Delivery / shipping.
   if (user.includes('deliver') || user.includes('ship') || user.includes('shipping')) {
     const delLine = kb.split('\n').find(l => /deliver|ship/i.test(l));
-    if (delLine) return { reply: delLine.trim() };
+    if (delLine) return { reply: polish(delLine.trim()) };
   }
 
   // Location / address / where.
   if (user.includes('where') || user.includes('location') || user.includes('address') || user.includes('find you')) {
     const locLine = kb.split('\n').find(l => /location|address|street|road|avenue/i.test(l));
-    if (locLine) return { reply: locLine.trim() };
+    if (locLine) return { reply: polish(locLine.trim()) };
   }
 
   // Phone / contact.
   if (user.includes('phone') || user.includes('call') || user.includes('contact') || user.includes('number')) {
     const phoneLine = kb.split('\n').find(l => /phone|call|contact/i.test(l));
-    if (phoneLine) return { reply: phoneLine.trim() };
+    if (phoneLine) return { reply: polish(phoneLine.trim()) };
   }
 
   // Menu / products / what do you sell.
   if (user.includes('menu') || user.includes('sell') || user.includes('product') || user.includes('what do you')) {
     const menuLine = kb.split('\n').find(l => /menu|product|sell|offer/i.test(l));
-    if (menuLine) return { reply: menuLine.trim() };
+    if (menuLine) return { reply: polish(menuLine.trim()) };
   }
 
   // Allergens / dietary.
   if (user.includes('allerg') || user.includes('gluten') || user.includes('vegan') || user.includes('dairy') || user.includes('nut')) {
     const algLine = kb.split('\n').find(l => /allerg|gluten|vegan|dairy|nut/i.test(l));
-    if (algLine) return { reply: algLine.trim() };
+    if (algLine) return { reply: polish(algLine.trim()) };
   }
 
   // Order / how to buy.
   if (user.includes('order') || user.includes('buy') || user.includes('purchase')) {
     const orderLine = kb.split('\n').find(l => /order|buy|purchase/i.test(l));
-    if (orderLine) return { reply: orderLine.trim() };
+    if (orderLine) return { reply: polish(orderLine.trim()) };
   }
 
   // Payment.
   if (user.includes('pay') || user.includes('card') || user.includes('cash') || user.includes('apple pay')) {
     const payLine = kb.split('\n').find(l => /payment|pay|card|cash/i.test(l));
-    if (payLine) return { reply: payLine.trim() };
+    if (payLine) return { reply: polish(payLine.trim()) };
   }
 
   // Loyalty / rewards.
   if (user.includes('loyalt') || user.includes('reward') || user.includes('stamp') || user.includes('free')) {
     const loyalLine = kb.split('\n').find(l => /loyalt|reward|stamp|free/i.test(l));
-    if (loyalLine) return { reply: loyalLine.trim() };
+    if (loyalLine) return { reply: polish(loyalLine.trim()) };
   }
 
   // Generic keyword search: find the line in KB with the most matching words.
@@ -99,7 +99,7 @@ export async function chatCompletion(opts = {}) {
     for (const w of userWords) if (lineWords.includes(w)) score++;
     if (score > bestScore) { bestScore = score; bestLine = line; }
   }
-  if (bestScore >= 2 && bestLine) return { reply: bestLine.trim() };
+  if (bestScore >= 2 && bestLine) return { reply: polish(bestLine.trim()) };
 
   // Fallback: email capture (per spec §7.3).
   return {
