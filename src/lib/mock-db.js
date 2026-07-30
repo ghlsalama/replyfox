@@ -20,16 +20,16 @@ const DEMO_BUSINESS = {
 const DEMO_KB = {
   id: 'kb-001',
   business_id: 'demo-001',
-  content: `Sunrise Bakery — Fresh bread, pastries, and cakes baked daily.
+  content: `Sunrise Bakery — Fresh Bread, Pastries, and Cakes Baked Daily.
 
-HOURS: Monday-Friday 7am-6pm, Saturday 8am-4pm, Sunday closed.
+HOURS: Monday–Friday 7:00 AM–6:00 PM, Saturday 8:00 AM–4:00 PM, Sunday Closed.
 LOCATION: 42 Flour Street, Riverside. Phone: 555-0142.
-DELIVERY: We deliver within 5 miles for orders over $25. Same-day delivery if ordered before 2pm.
-MENU: Sourdough bread ($6), croissants ($3.50 each or 3 for $9), birthday cakes (custom, from $35), vegan options available daily.
-ALLERGENS: All products may contain wheat, dairy, eggs, and nuts. Gluten-free options available on request (48h notice).
-ORDERING: Order in-store, by phone (555-0142), or via our website. Custom cake orders need 72 hours notice.
-PAYMENT: Cash, card, Apple Pay. No minimum order for in-store.
-LOYALTY: Buy 10 loaves, get 1 free. Ask for a stamp card.`,
+DELIVERY: We Deliver Within 5 Miles for Orders Over $25. Same-Day Delivery if Ordered Before 2:00 PM.
+MENU: Sourdough Bread ($6), Butter Croissants ($3.50 Each or 3 for $9), Custom Birthday Cakes (From $35), Vegan Options Available Daily.
+ALLERGENS: All Products May Contain Wheat, Dairy, Eggs, and Nuts. Gluten-Free Options Available on Request (48-Hour Notice).
+ORDERING: Order In-Store, by Phone (555-0142), or Via Our Website. Custom Cake Orders Require 72 Hours Notice.
+PAYMENT: Cash, Card, Apple Pay. No Minimum Order for In-Store Purchases.
+LOYALTY: Buy 10 Loaves, Get 1 Free. Ask for a Stamp Card.`,
   source: 'text',
   chunk_count: 9,
   created_at: new Date().toISOString(),
