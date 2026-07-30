@@ -4,6 +4,17 @@
 
 export const GROQ_DEFAULTS = Object.freeze({ model: 'mock', temperature: 0.3, max_tokens: 300, top_p: 0.9 });
 
+function polish(s) {
+  if (!s) return s;
+  s = s.replace(/(^|[.!?]\s+)([a-z])/g, (_, p, c) => p + c.toUpperCase());
+  s = s.replace(/\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/gi, m => m[0].toUpperCase() + m.slice(1).toLowerCase());
+  s = s.replace(/\b(sourdough|croissant|croissants|baguette|muffins|donuts|pastries|espresso|cappuccino|latte|vegan|gluten-free|sourdough loaf|butter croissants|birthday cake|custom cake)\b/gi, m => m[0].toUpperCase() + m.slice(1).toLowerCase());
+  s = s.replace(/\b(am|pm)\b/gi, m => m.toUpperCase());
+  s = s.replace(/sunrise bakery/gi, 'Sunrise Bakery');
+  s = s.replace(/^Our hours: /m, 'Our hours are ');
+  return s;
+}
+
 export async function chatCompletion(opts = {}) {
   const system = opts.system || '';
   const user = (opts.user || '').toLowerCase().trim();
@@ -16,13 +27,13 @@ export async function chatCompletion(opts = {}) {
 
   // Greetings.
   if (/^(hi|hello|hey|halo|howdy|good (morning|afternoon|evening))/.test(user)) {
-    return { reply: `Hi there! Welcome to ${bizName}. How can I help you today?` };
+    return { reply: polish(`Hi there! Welcome to ${bizName}. How can I help you today?` };
   }
 
   // Hours.
   if (user.includes('hour') || user.includes('open') || user.includes('close') || user.includes('when')) {
     const hoursLine = kb.match(/hours?:?([^\n]+)/i);
-    if (hoursLine) return { reply: `Our hours: ${hoursLine[1].trim()}. Come visit us!` };
+    if (hoursLine) return { reply: polish(`Our hours: ${hoursLine[1].trim()}. Come visit us!` };
   }
 
   // Price / cost.
